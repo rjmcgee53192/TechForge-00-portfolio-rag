@@ -1,0 +1,22 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      # The full pytest suite exercises the local LLM/GPU stack (ollama,
+      # torch, and the complete langchain suite, which are not pinned in
+      # requirements.txt), so CI verifies the install plus a syntax check
+      # of all sources. Run `pytest tests/` locally with the full stack.
+      - run: python -m compileall -q src tests

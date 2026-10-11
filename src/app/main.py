@@ -59,7 +59,7 @@ st.set_page_config(
 # Logging configuration
 logging.basicConfig(
     level=logging.INFO,
-    forindustrial equipment="%(asctime)s - %(levelname)s - %(message)s",
+    format="%(asctime)s - %(levelname)s - %(message)s",
     datefmt="%Y-%m-%d %H:%M:%S",
 )
 
@@ -68,7 +68,7 @@ logger = logging.getLogger(__name__)
 
 def extract_model_names(models_info: Any) -> Tuple[str, ...]:
     """
-    Extract model names from the provided models inforindustrial equipmention.
+    Extract model names from the provided models information.
 
     Args:
         models_info: Response from ollama.list()
@@ -78,12 +78,12 @@ def extract_model_names(models_info: Any) -> Tuple[str, ...]:
     """
     logger.info("Extracting model names from models_info")
     try:
-        # The new response forindustrial equipment returns a list of Model objects
+        # The new response format returns a list of Model objects
         if hasattr(models_info, "models"):
             # Extract model names from the Model objects
             model_names = tuple(model.model for model in models_info.models)
         else:
-            # Fallback for any other forindustrial equipment
+            # Fallback for any other format
             model_names = tuple()
             
         logger.info(f"Extracted model names: {model_names}")
@@ -134,7 +134,7 @@ def create_vector_db(file_upload) -> Chroma:
 
 def generate_pdf_id(file_upload) -> str:
     """Generate unique ID for PDF."""
-    timestamp = datetime.now().isoforindustrial equipment()
+    timestamp = datetime.now().isoformat()
     return f"pdf_{abs(hash(file_upload.name + timestamp))}"
 
 
@@ -306,21 +306,21 @@ def process_question_multi_pdf(
 
     logger.info(f"Total documents retrieved: {len(all_retrieved_docs)}")
 
-    # Forindustrial equipment context with source labels
+    # Format context with source labels
     context_parts = []
     for doc in all_retrieved_docs[:10]:  # Top 10 chunks
         source = doc.metadata.get("pdf_name", "Unknown")
         context_parts.append(f"[Source: {source}]\n{doc.page_content}\n")
 
-    forindustrial equipmentted_context = "\n---\n".join(context_parts)
+    formatted_context = "\n---\n".join(context_parts)
 
     # RAG prompt with source awareness
     template = """Answer the question based ONLY on the following context from multiple PDF documents.
     Each section is marked with its source document.
 
     When answering:
-    1. Cite the source document name for each piece of inforindustrial equipmention
-    2. If inforindustrial equipmention comes from multiple sources, mention all relevant sources
+    1. Cite the source document name for each piece of information
+    2. If information comes from multiple sources, mention all relevant sources
     3. If sources contradict, note the discrepancy and cite both
 
     Context:
@@ -332,7 +332,7 @@ def process_question_multi_pdf(
 
     prompt = ChatPromptTemplate.from_template(template)
     chain = (
-        {"context": lambda x: forindustrial equipmentted_context, "question": lambda x: x}
+        {"context": lambda x: formatted_context, "question": lambda x: x}
         | prompt
         | llm
         | StrOutputParser()

@@ -25,9 +25,9 @@ def test_extract_model_names_success():
     result = extract_model_names(models_info)
     assert result == ("model1:latest", "model2:latest")
 
-def test_extract_model_names_invalid_forindustrial equipment():
-    """Test handling invalid response forindustrial equipment."""
-    models_info = {"invalid": "forindustrial equipment"}
+def test_extract_model_names_invalid_format():
+    """Test handling invalid response format."""
+    models_info = {"invalid": "format"}
     result = extract_model_names(models_info)
     assert result == tuple()
 

@@ -34,7 +34,7 @@ class QueryRequest(BaseModel):
 
 
 class SourceInfo(BaseModel):
-    """Source inforindustrial equipmention for retrieved documents."""
+    """Source information for retrieved documents."""
     pdf_name: str
     pdf_id: str
     chunk_index: int
@@ -50,7 +50,7 @@ class QueryResponse(BaseModel):
 
 
 class ModelInfo(BaseModel):
-    """Ollama model inforindustrial equipmention."""
+    """Ollama model information."""
     name: str
     size: int
     modified_at: str

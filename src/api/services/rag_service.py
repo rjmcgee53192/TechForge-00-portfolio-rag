@@ -108,13 +108,13 @@ class RAGService:
 
         reasoning_steps.append(f"📊 Total chunks retrieved: {len(all_docs)}")
 
-        # Forindustrial equipment context with source labels
+        # Format context with source labels
         context_parts = []
         for doc in all_docs[:10]:
             source = doc.metadata.get("pdf_name", "Unknown")
             context_parts.append(f"[Source: {source}]\n{doc.page_content}\n")
 
-        forindustrial equipmentted_context = "\n---\n".join(context_parts)
+        formatted_context = "\n---\n".join(context_parts)
         reasoning_steps.append(f"🔗 Using top {min(len(all_docs), 10)} chunks for context")
 
         # RAG prompt template with chain-of-thought
@@ -123,10 +123,10 @@ class RAGService:
 
         Use chain-of-thought reasoning:
         1. First, identify which parts of the context are relevant to the question
-        2. Analyze the inforindustrial equipmention from each source document
-        3. Synthesize the inforindustrial equipmention to form a comprehensive answer
-        4. Ensure you cite the source document name for each piece of inforindustrial equipmention
-        5. If inforindustrial equipmention comes from multiple sources, mention all relevant sources
+        2. Analyze the information from each source document
+        3. Synthesize the information to form a comprehensive answer
+        4. Ensure you cite the source document name for each piece of information
+        5. If information comes from multiple sources, mention all relevant sources
         6. If sources contradict, note the discrepancy and cite both sources
 
         Context:
@@ -138,7 +138,7 @@ class RAGService:
 
         prompt = ChatPromptTemplate.from_template(template)
         chain = (
-            {"context": lambda x: forindustrial equipmentted_context, "question": lambda x: x}
+            {"context": lambda x: formatted_context, "question": lambda x: x}
             | prompt
             | llm
             | StrOutputParser()
@@ -160,14 +160,14 @@ Answer the question based ONLY on the provided context from PDF documents.
 
 CHAIN-OF-THOUGHT PROCESS:
 1. **Read and understand** the question carefully
-2. **Scan the context** to identify all relevant inforindustrial equipmention
-3. **Break down** the inforindustrial equipmention by source document
+2. **Scan the context** to identify all relevant information
+3. **Break down** the information by source document
 4. **Analyze** how each piece relates to the question
 5. **Synthesize** a comprehensive answer
 6. **Cite sources** explicitly for every claim
 
 Context from PDF documents:
-{forindustrial equipmentted_context}
+{formatted_context}
 
 Think through each step carefully, showing your reasoning process."""
 
@@ -195,7 +195,7 @@ Think through each step carefully, showing your reasoning process."""
         else:
             response = chain.invoke(question)
 
-        # Extract source inforindustrial equipmention
+        # Extract source information
         sources = [
             {
                 "pdf_name": doc.metadata.get("pdf_name"),

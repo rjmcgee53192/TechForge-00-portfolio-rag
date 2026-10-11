@@ -28,4 +28,3 @@ If you lack a dedicated GPU, providing a `GOOGLE_API_KEY` in your `.env` will au
 ## 🤖 Autonomous QA Pipeline
 I engineered a multi-agent diagnostic system to ensure maximum uptime. Prior to deployment, an autonomous 'Infrastructure Agent' commands the **OpenClaw CLI** to run a comprehensive system sweep. This includes verifying the Semantic Routing accuracy between the 1B/32B models, profiling the A6000's VRAM load, and confirming that the Cloud Fallback cleanly activates during proxy downtime. 
 
-You can view the latest automated test sweep in `final_test_report.md`.

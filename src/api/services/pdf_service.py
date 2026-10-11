@@ -156,5 +156,5 @@ class PDFService:
         Returns:
             Unique PDF identifier
         """
-        timestamp = datetime.now().isoforindustrial equipment()
+        timestamp = datetime.now().isoformat()
         return f"pdf_{abs(hash(filename + timestamp))}"
